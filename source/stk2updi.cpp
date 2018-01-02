@@ -192,3 +192,4 @@ void sys_init() {
 		(1 << PRTIM1) |		// turn off timer 1
 		(1 << PRSPI) |		// turn off SPI interface
 		(1 << PRADC);		// turn off the ADC		
+}
