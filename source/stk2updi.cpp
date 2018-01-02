@@ -1,10 +1,3 @@
-/*
- * STK2UPDI.cpp
- *
- * Created: 11-11-2017 22:29:58
- * Author : JMR_2
- */ 
-
 // Includes
 //#include <avr/io.h>
 #define F_CPU 16000000

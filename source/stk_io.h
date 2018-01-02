@@ -1,11 +1,3 @@
-/*
- * stk_io.h
- *
- * Created: 18-11-2017 14:55:53
- *  Author: JMR_2
- */ 
-
-
 #ifndef STK_IO_H_
 #define STK_IO_H_
 

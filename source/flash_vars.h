@@ -1,11 +1,3 @@
-/*
- * flash_vars.h
- *
- * Created: 26-11-2017 16:36:35
- *  Author: JMR_2
- */ 
-
-
 #ifndef FLASH_VARS_H_
 #define FLASH_VARS_H_
 
