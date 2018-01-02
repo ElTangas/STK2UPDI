@@ -1,11 +1,3 @@
-/*
- * UPDI_cmd.h
- *
- * Created: 23-11-2017 22:46:11
- *  Author: JMR_2
- */ 
-
-
 #ifndef UPDI_LO_LVL_H_
 #define UPDI_LO_LVL_H_
 
