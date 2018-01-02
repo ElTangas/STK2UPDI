@@ -1,10 +1,3 @@
-/*
- * STK500.cpp
- *
- * Created: 08-12-2017 19:47:27
- *  Author: JMR_2
- */
-
 #include "STK500.h"
 
 // *** Writeable Parameter Values ***
