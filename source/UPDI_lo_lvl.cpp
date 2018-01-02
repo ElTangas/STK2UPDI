@@ -1,10 +1,3 @@
-/*
- * UPDI_cmd.cpp
- *
- * Created: 23-11-2017 22:48:36
- *  Author: JMR_2
- */ 
-
 // Includes
 #include "UPDI_lo_lvl.h"
 
