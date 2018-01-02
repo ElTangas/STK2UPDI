@@ -1,11 +1,3 @@
-/*
- * NVM.h
- *
- * Created: 15-12-2017 10:59:53
- *  Author: JMR_2
- */ 
-
-
 #ifndef NVM_H_
 #define NVM_H_
 
@@ -14,11 +6,11 @@
 namespace NVM {
 	// *** Base Addresses ***
 	constexpr uint16_t NVM_base		= 0x1000;		/* Base address of the NVM controller */
-	constexpr uint16_t Flash_base	= 0x8000;		/* Base address of the flash memory */
+	constexpr uint16_t Flash_base		= 0x8000;		/* Base address of the flash memory */
 	constexpr uint16_t Sig_base		= 0x1100;		/* Base address of the signature */
-	constexpr uint16_t Fuse_base	= 0x1280;		/* Base address of the fuses */
-	constexpr uint16_t User_base	= 0x1300;		/* Base address of the User Row EEPROM */
-	constexpr uint16_t EEPROM_base	= 0x1400;		/* Base address of the main EEPROM */
+	constexpr uint16_t Fuse_base		= 0x1280;		/* Base address of the fuses */
+	constexpr uint16_t User_base		= 0x1300;		/* Base address of the User Row EEPROM */
+	constexpr uint16_t EEPROM_base		= 0x1400;		/* Base address of the main EEPROM */
 	
 	// *** NVM Register Offsets
 	constexpr uint8_t CTRLA			= 0x00;
