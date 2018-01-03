@@ -30,6 +30,7 @@ Adapted from: https://github.com/mraardvark/pyupdi
 
 To build, run the make.bat file, after editing it with the path of AVR-GCC on your system. Since this program is meant to talk to Atmel Studio, I provide a makefile suitable for a MS-Windows environment.
 
-There are also pre-built files on the "build" directory.
+There are also pre-built files on the "build" directory. They were built using avr-gcc 8.0 compiled for MinGW by sprintersb:
+https://sourceforge.net/projects/mobilechessboar/files/avr-gcc%20snapshots%20%28Win32%29/
 
 More information at: http://www.avrfreaks.net/forum/stk500-updi-working-was-enabling-xtiny-updi
