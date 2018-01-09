@@ -1,3 +1,10 @@
+/*
+ * STK500.cpp
+ *
+ * Created: 08-12-2017 19:47:27
+ *  Author: JMR_2
+ */
+
 #include "STK500.h"
 
 // *** Writeable Parameter Values ***
@@ -226,23 +233,22 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 			return;
 		}
 		// in program mode
-		const uint16_t NumBytes = (body[1] << 8) + body[2];
+		const uint16_t NumBytes = (body[1] << 8) | body[2];
 		uint8_t & status1 = body[1];
 		uint8_t & status2 = body[NumBytes + 2];
 		
 		// Calculate physical address for reading
 		uint16_t UPDI_address = mem_base;
 		UPDI_address += is_word_address ? (address << 1) : address;
+		// Update STK500 address
+		address += is_word_address ? (NumBytes >> 1) : NumBytes;
 		
 		UPDI::stptr_w(UPDI_address);
 		UPDI::rep(NumBytes - 1);
 		body[2] = UPDI::ldinc_b();
-		for (uint16_t i = 0; i < (NumBytes - 1); i++) {
-			body[3 + i] = UPDI_io::get();
+		for (uint16_t i = 3; i < (NumBytes + 2); i++) {
+			body[i] = UPDI_io::get();
 		}
-
-		// Update STK500 address
-		address += is_word_address ? (NumBytes >> 1) : NumBytes;
 	
 		status1 = status2 = STATUS_CMD_OK;
 		size_hi = (NumBytes + 3) >> 8;
@@ -257,6 +263,8 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 
 			uint16_t prg_address = mem_base;
 			prg_address += is_word_address ? (address << 1) : address;
+			// Update address
+			address += is_word_address ? (NumBytes >> 1) : NumBytes;
 
 			// Setup UPDI pointer for block transfer
 			UPDI::stptr_w(prg_address);
@@ -302,8 +310,6 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 				}
 				burn_buffer();
 			}
-			// Update address
-			address += is_word_address ? (body[2] >> 1) : body[2];
 
 			set_status(STATUS_CMD_OK);
 			return;
@@ -336,7 +342,7 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 	}
 	
 	void STK500::chip_erase(){
-		// Write Chip Erase key (allows read access to all addressing space)
+		// Write Chip Erase key 
 		UPDI::write_key(UPDI::Chip_Erase);
 		// Request reset
 		UPDI::stcs(UPDI::reg::ASI_Reset_Request, UPDI::RESET_ON);
