@@ -1,3 +1,10 @@
+/*
+ * STK2UPDI.cpp
+ *
+ * Created: 11-11-2017 22:29:58
+ * Author : JMR_2
+ */ 
+
 // Includes
 //#include <avr/io.h>
 #define F_CPU 16000000
@@ -40,18 +47,30 @@ inline void setup() {
 	if ((PIND & (1 << PIND5)) == 0)
 		STK500::chip_erase();
 	
-	// Stop if incorrect initial state
-	if (lcds(reg::ASI_System_Status) != 0x82) {
-		// Dump status/control registers for analysis
-		for (int i = 0; i < 16; i++) {
-			STK_io::put(lcds(static_cast<reg::reg_t>(i)));
-		}
-		// Start blinking
-		DDRB |= 1 << DDB5;
-		while (1) {
-			PINB |= 1 << PINB5;
-			_delay_ms(500);
-		}
+	constexpr int LED_pin = 5;
+	switch (lcds(reg::ASI_System_Status)) {
+		// Turn on LED if in programming mode
+		case 0x08:
+			//DDRB |= 1 << LED_pin;
+			PORTB |= 1 << LED_pin;
+			break;
+		// Turn off LED if in normal mode
+		case 0x82:
+			//DDRB &= ~(1 << LED_pin);
+			PORTB &= ~(1 << LED_pin);
+			break;
+		// Stop if incorrect initial state
+		default:
+			// Dump status/control registers for analysis
+			for (int i = 0; i < 16; i++) {
+				STK_io::put(lcds(static_cast<reg::reg_t>(i)));
+			}
+			// Start blinking
+			DDRB |= 1 << LED_pin;
+			while (1) {
+				PINB |= 1 << LED_pin;
+				_delay_ms(500);
+			}
 	}
 }
 
