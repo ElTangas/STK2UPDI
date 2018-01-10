@@ -197,6 +197,8 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 				// better clear the page buffer, just in case.
 				UPDI::sts_b(NVM::NVM_base + NVM::CTRLA, NVM::PBC);
 				set_status(STATUS_CMD_OK);
+				// Turn on LED to indicate program mode
+				PORTB |= 1 << 5;
 				return;
 			// in other modes just fail
 			default:
@@ -218,6 +220,8 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 			// already in normal mode
 			case 0x82:
 				set_status(STATUS_CMD_OK);
+				// Turn off LED to indicate normal mode
+				PORTB &= ~(1 << 5);
 				return;
 			// in other modes just fail
 			default:
@@ -230,30 +234,30 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 		if (UPDI::lcds(UPDI::reg::ASI_System_Status) != 0x08){
 			// fail if not in program mode
 			set_status(STATUS_CMD_FAILED);
-			return;
 		}
-		// in program mode
-		const uint16_t NumBytes = (body[1] << 8) | body[2];
-		uint8_t & status1 = body[1];
-		uint8_t & status2 = body[NumBytes + 2];
+		else {
+			// in program mode
+			const uint16_t NumBytes = (body[1] << 8) | body[2];
+			uint8_t & status1 = body[1];
+			uint8_t & status2 = body[NumBytes + 2];
 		
-		// Calculate physical address for reading
-		uint16_t UPDI_address = mem_base;
-		UPDI_address += is_word_address ? (address << 1) : address;
-		// Update STK500 address
-		address += is_word_address ? (NumBytes >> 1) : NumBytes;
+			// Calculate physical address for reading
+			uint16_t UPDI_address = mem_base;
+			UPDI_address += is_word_address ? (address << 1) : address;
+			// Update STK500 address
+			address += is_word_address ? (NumBytes >> 1) : NumBytes;
 		
-		UPDI::stptr_w(UPDI_address);
-		UPDI::rep(NumBytes - 1);
-		body[2] = UPDI::ldinc_b();
-		for (uint16_t i = 3; i < (NumBytes + 2); i++) {
-			body[i] = UPDI_io::get();
-		}
+			UPDI::stptr_w(UPDI_address);
+			UPDI::rep(NumBytes - 1);
+			body[2] = UPDI::ldinc_b();
+			for (uint16_t i = 3; i < (NumBytes + 2); i++) {
+				body[i] = UPDI_io::get();
+			}
 	
-		status1 = status2 = STATUS_CMD_OK;
-		size_hi = (NumBytes + 3) >> 8;
-		size_lo = (NumBytes + 3) & 0xFF;
-		return;
+			status1 = status2 = STATUS_CMD_OK;
+			size_hi = (NumBytes + 3) >> 8;
+			size_lo = (NumBytes + 3) & 0xFF;
+		}
 	}
 	
 	void STK500::program_nvm(uint16_t mem_base, uint8_t buff_size, uint8_t is_word_address){
@@ -312,12 +316,10 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 			}
 
 			set_status(STATUS_CMD_OK);
-			return;
 		}
 		else {
 			// in other modes just fail
 			set_status(STATUS_CMD_FAILED);
-			return;
 		}		
 	}
 	
