@@ -276,6 +276,10 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 			uint8_t current_byte = 10;		/* Index of the first byte to send inside the STK500 command body */
 			
 			auto updi_send_block = [] (uint8_t count, uint8_t & index) {
+				uint16_t temp = UPDI::ldptr_w();
+				/* Wait while NVM is busy from previous operations */
+				while (UPDI::lds_b(NVM::NVM_base + NVM::STATUS) & 0x03);				
+				UPDI::stptr_w(temp);
 				UPDI::rep(count - 1);
 				UPDI::stinc_b(body[index++]);
 				for (uint8_t i = 0; i < (count - 1); i++) {
@@ -285,10 +289,10 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 			};
 			
 			auto burn_buffer = [] () {
-				/* Wait while NVM is busy from previous operations */
-				while (UPDI::lds_b(NVM::NVM_base + NVM::STATUS) & 0x03);
+				uint16_t temp = UPDI::ldptr_w();
 				/* Execute NVM erase/write */
-				UPDI::sts_b(NVM::NVM_base + NVM::CTRLA, NVM::ERWP);			
+				UPDI::sts_b(NVM::NVM_base + NVM::CTRLA, NVM::ERWP);
+				UPDI::stptr_w(temp);		
 			};
 
 			/* Check address alignment, calculate number of unaligned bytes to send */
@@ -355,3 +359,4 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 		set_status(STATUS_CMD_OK);
 		return;
 	}
+	
