@@ -1,10 +1,17 @@
+/*
+ * updi_io.cpp
+ *
+ * Created: 18-11-2017 10:36:54
+ *  Author: JMR_2
+ */ 
+
 // Includes
 #include <avr/io.h>
 #include "updi_io.h"
 
 // Defines
 #define F_CPU 16000000U
-#define BIT_RATE 200000U // (max 570000)
+#define BIT_RATE 250000U // (max 570000)
 #define BIT_TIME (F_CPU/BIT_RATE)
 //#define _DEBUG
 
@@ -201,3 +208,24 @@ inline void UPDI_io::stop_timer() {
 inline void UPDI_io::start_timer() {
 	TCCR0B = 1;
 }
+
+/*
+inline uint8_t UPDI_io::get_parity(uint8_t c) {
+	asm(
+	"mov	r0, %0	\n"
+	"swap	r0		\n"
+	"eor	%0, r0	\n"
+	"mov	r0, %0	\n"
+	"lsr	r0		\n"
+	"lsr	r0		\n"
+	"eor	%0, r0	\n"
+	"mov	r0, %0	\n"
+	"lsr	r0		\n"
+	"eor	%0, r0	\n"
+	:"+r" (c)
+	:
+	:"r0"
+	);
+	return c & 0x01;
+}
+*/
