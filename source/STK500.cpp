@@ -17,9 +17,10 @@ uint8_t STK500::PARAM_RESET_POLARITY_VAL;
 uint8_t STK500::PARAM_CONTROLLER_INIT_VAL;
 
 // *** STK500 packet ***
-uint8_t STK500::number;
-uint8_t STK500::size_hi;
-uint8_t STK500::size_lo;
+uint8_t STK500::prologue[3];
+uint8_t & STK500::number = reinterpret_cast<uint8_t &> (STK500::prologue[0]);
+uint8_t & STK500::size_hi = reinterpret_cast<uint8_t &> (STK500::prologue[1]);
+uint8_t & STK500::size_lo = reinterpret_cast<uint8_t &> (STK500::prologue[2]);
 uint8_t STK500::body [275];
 
 // *** Address ***
@@ -32,17 +33,13 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 	bool STK500::receive() {
 		while (STK_io::get() != MESSAGE_START);
 		uint8_t checksum = MESSAGE_START;
-		number = STK_io::get();
-		checksum ^= number;
-		size_hi = STK_io::get();
-		checksum ^= size_hi;
-		size_lo = STK_io::get();
-		checksum ^= size_lo;
+		checksum ^= (number = STK_io::get());
+		checksum ^= (size_hi = STK_io::get());
+		checksum ^= (size_lo = STK_io::get());
 		if (STK_io::get() != TOKEN) return false;
 		checksum ^= TOKEN;
-		for (int i = 0; i < (size_lo + size_hi * 256); i++) {
-			body[i] = STK_io::get();
-			checksum ^= body[i];
+		for (int16_t i = 0; i < (size_lo | (size_hi << 8)); i++) {
+			checksum ^= (body[i] = STK_io::get());
 		}
 		if (STK_io::get() != checksum) body[0] = ANSWER_CKSUM_ERROR;
 		return true;
@@ -54,7 +51,7 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 		checksum ^= STK_io::put(size_hi);
 		checksum ^= STK_io::put(size_lo);
 		checksum ^= STK_io::put(TOKEN);
-		for (int i = 0; i < (size_lo + size_hi * 256); i++) {
+		for (int16_t i = 0; i < (size_lo | (size_hi << 8)); i++) {
 			checksum ^= STK_io::put(body[i]);
 		}
 		STK_io::put(checksum);
