@@ -1,16 +1,10 @@
-/*
- * packet.h
- *
- * Created: 12-11-2017 11:10:31
- *  Author: JMR_2
- */ 
-
-
 #ifndef STK500_H_
 #define STK500_H_
 
 #include "stk_io.h"
 #include <stdint.h>
+#define F_CPU 16000000
+#include <util/delay.h>
 #include "flash_vars.h"
 #include "NVM.h"
 
@@ -101,8 +95,9 @@ namespace STK500 {
 	extern uint16_t address;			/* Note: actually this is a 32 bit value. However, for the xtiny we can use just the low 16 bits */
 	extern uint8_t (& address_byte)[2];
 	
-	//  *** Signature response ***
+	//  *** Sign on responses ***
 	extern FLASH(uint8_t) sgn_resp[10];
+	extern FLASH(uint8_t) lock_resp[13];
 	
 	// *** Parameter initialization ***
 	void init();

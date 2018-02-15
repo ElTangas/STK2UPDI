@@ -1,14 +1,5 @@
-/*
- * STK2UPDI.cpp
- *
- * Created: 11-11-2017 22:29:58
- * Author : JMR_2
- */ 
-
 // Includes
 //#include <avr/io.h>
-#define F_CPU 16000000
-#include <util/delay.h>
 #include "STK500.h"
 #include "updi_io.h"
 #include "stk_io.h"
@@ -34,44 +25,6 @@ inline void setup() {
 	STK_io::init();
 	UPDI_io::init();
 	
-	/* Initialize STK500v2 variables */
-	STK500::PARAM_VTARGET_VAL = 55;
-	STK500::PARAM_VADJUST_VAL = 32;
-
-	using namespace UPDI;
-	/* Initialize or enable UPDI */
-	UPDI_io::put(UPDI_io::double_break);
-	stcs(reg::Control_A, 6);
-	
-	/* Perform chip erase if D5 is low */
-	if ((PIND & (1 << PIND5)) == 0)
-		STK500::chip_erase();
-	
-	constexpr int LED_pin = 5;
-	switch (lcds(reg::ASI_System_Status)) {
-		// Turn on LED if in programming mode
-		case 0x08:
-			//DDRB |= 1 << LED_pin;
-			PORTB |= 1 << LED_pin;
-			break;
-		// Turn off LED if in normal mode
-		case 0x82:
-			//DDRB &= ~(1 << LED_pin);
-			PORTB &= ~(1 << LED_pin);
-			break;
-		// Stop if incorrect initial state
-		default:
-			// Dump status/control registers for analysis
-			for (int i = 0; i < 16; i++) {
-				STK_io::put(lcds(static_cast<reg::reg_t>(i)));
-			}
-			// Start blinking
-			DDRB |= 1 << LED_pin;
-			while (1) {
-				PINB |= 1 << LED_pin;
-				_delay_ms(500);
-			}
-	}
 }
 
 

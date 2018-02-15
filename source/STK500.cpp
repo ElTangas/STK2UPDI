@@ -1,10 +1,3 @@
-/*
- * STK500.cpp
- *
- * Created: 08-12-2017 19:47:27
- *  Author: JMR_2
- */
-
 #include "STK500.h"
 
 // *** Writeable Parameter Values ***
@@ -67,11 +60,36 @@ uint8_t (& STK500::address_byte)[2] = (uint8_t (&)[2]) STK500::address;
 // *** General command functions ***
 	// *** Signature response message ***
 	FLASH(uint8_t) STK500::sgn_resp[10] {STATUS_CMD_OK, 8, 'S', 'T', 'K', '5', '0', '0', '_', '2'};
+	// *** Locked MCU response message ***
+	FLASH(uint8_t) STK500::lock_resp[13] {STATUS_CMD_OK, 11, 'C', 'H', 'I', 'P', '_', 'L', 'O', 'C', 'K', 'E', 'D'};
 	void STK500::sign_on(){
-		size_hi = 0;
-		size_lo = sizeof(sgn_resp) + 1;
-		for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
-			body[1+i] = sgn_resp[i];
+		/* Initialize STK500v2 variables */
+		PARAM_VTARGET_VAL = 55;
+		PARAM_VADJUST_VAL = 32;
+
+		using namespace UPDI;
+		/* Initialize or enable UPDI */
+		UPDI_io::put(UPDI_io::double_break);
+		stcs(reg::Control_A, 6);
+	
+		/* Perform chip erase if D5 is low */
+		if ((PIND & (1 << PIND5)) == 0)
+			chip_erase();
+	
+		uint8_t status = lcds(reg::ASI_System_Status);
+		if (status & 0x01) {
+			size_hi = 0;
+			size_lo = sizeof(lock_resp) + 1;
+			for (uint8_t i = 0; i < sizeof(lock_resp); i++) {
+				body[1+i] = lock_resp[i];
+			}
+		}
+		else {
+			size_hi = 0;
+			size_lo = sizeof(sgn_resp) + 1;
+			for (uint8_t i = 0; i < sizeof(sgn_resp); i++) {
+				body[1+i] = sgn_resp[i];
+			}
 		}
 	}
 
