@@ -149,7 +149,7 @@ Disassembly of section .text:
 
 000000d8 <_ZN7UPDI_io3getEv>:
   d8:	15 bc       	out	0x25, r1	; 37
-  da:	9f e1       	ldi	r25, 0x1F	; 31
+  da:	92 e2       	ldi	r25, 0x22	; 34
   dc:	97 bd       	out	0x27, r25	; 39
   de:	9c e0       	ldi	r25, 0x0C	; 12
   e0:	96 bd       	out	0x26, r25	; 38
@@ -164,7 +164,7 @@ Disassembly of section .text:
   f2:	fe cf       	rjmp	.-4      	; 0xf0 <_ZN7UPDI_io3getEv+0x18>
   f4:	92 e0       	ldi	r25, 0x02	; 2
   f6:	95 bb       	out	0x15, r25	; 21
-  f8:	9f e3       	ldi	r25, 0x3F	; 63
+  f8:	96 e4       	ldi	r25, 0x46	; 70
   fa:	97 bd       	out	0x27, r25	; 39
   fc:	28 e0       	ldi	r18, 0x08	; 8
   fe:	32 e0       	ldi	r19, 0x02	; 2
@@ -182,7 +182,7 @@ Disassembly of section .text:
  116:	fe cf       	rjmp	.-4      	; 0x114 <_ZN7UPDI_io3getEv+0x3c>
  118:	92 e0       	ldi	r25, 0x02	; 2
  11a:	95 bb       	out	0x15, r25	; 21
- 11c:	9f e9       	ldi	r25, 0x9F	; 159
+ 11c:	90 eb       	ldi	r25, 0xB0	; 176
  11e:	97 bd       	out	0x27, r25	; 39
  120:	4e 9b       	sbis	0x09, 6	; 9
  122:	fe cf       	rjmp	.-4      	; 0x120 <_ZN7UPDI_io3getEv+0x48>
@@ -196,9 +196,9 @@ Disassembly of section .text:
  12e:	92 e0       	ldi	r25, 0x02	; 2
  130:	95 bb       	out	0x15, r25	; 21
  132:	15 bc       	out	0x25, r1	; 37
- 134:	2f e3       	ldi	r18, 0x3F	; 63
+ 134:	26 e4       	ldi	r18, 0x46	; 70
  136:	27 bd       	out	0x27, r18	; 39
- 138:	2e e3       	ldi	r18, 0x3E	; 62
+ 138:	25 e4       	ldi	r18, 0x45	; 69
  13a:	26 bd       	out	0x26, r18	; 38
  13c:	22 e8       	ldi	r18, 0x82	; 130
  13e:	24 bd       	out	0x24, r18	; 36
@@ -236,7 +236,7 @@ Disassembly of section .text:
  17e:	fe cf       	rjmp	.-4      	; 0x17c <_ZN7UPDI_io3putEc+0x52>
  180:	92 e0       	ldi	r25, 0x02	; 2
  182:	95 bb       	out	0x15, r25	; 21
- 184:	9f e7       	ldi	r25, 0x7F	; 127
+ 184:	9d e8       	ldi	r25, 0x8D	; 141
  186:	97 bd       	out	0x27, r25	; 39
  188:	56 98       	cbi	0x0a, 6	; 10
  18a:	90 e0       	ldi	r25, 0x00	; 0
@@ -651,27 +651,27 @@ Disassembly of section .text:
 000004a6 <main>:
  4a6:	8f e3       	ldi	r24, 0x3F	; 63
  4a8:	80 93 7e 00 	sts	0x007E, r24	; 0x80007e <__TEXT_REGION_LENGTH__+0x7e007e>
- 4ac:	9f ef       	ldi	r25, 0xFF	; 255
- 4ae:	9b b9       	out	0x0b, r25	; 11
- 4b0:	9f ed       	ldi	r25, 0xDF	; 223
- 4b2:	95 b9       	out	0x05, r25	; 5
- 4b4:	90 e8       	ldi	r25, 0x80	; 128
- 4b6:	90 bf       	out	0x30, r25	; 48
- 4b8:	9d ec       	ldi	r25, 0xCD	; 205
- 4ba:	90 93 64 00 	sts	0x0064, r25	; 0x800064 <__TEXT_REGION_LENGTH__+0x7e0064>
- 4be:	92 e0       	ldi	r25, 0x02	; 2
- 4c0:	90 93 c0 00 	sts	0x00C0, r25	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
- 4c4:	90 e1       	ldi	r25, 0x10	; 16
- 4c6:	90 93 c4 00 	sts	0x00C4, r25	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
- 4ca:	98 e1       	ldi	r25, 0x18	; 24
- 4cc:	90 93 c1 00 	sts	0x00C1, r25	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
- 4d0:	96 e0       	ldi	r25, 0x06	; 6
- 4d2:	90 93 c2 00 	sts	0x00C2, r25	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
- 4d6:	5e 9a       	sbi	0x0b, 6	; 11
- 4d8:	92 ec       	ldi	r25, 0xC2	; 194
- 4da:	94 bd       	out	0x24, r25	; 36
- 4dc:	9e e3       	ldi	r25, 0x3E	; 62
- 4de:	96 bd       	out	0x26, r25	; 38
+ 4ac:	8f ef       	ldi	r24, 0xFF	; 255
+ 4ae:	8b b9       	out	0x0b, r24	; 11
+ 4b0:	8f ed       	ldi	r24, 0xDF	; 223
+ 4b2:	85 b9       	out	0x05, r24	; 5
+ 4b4:	80 e8       	ldi	r24, 0x80	; 128
+ 4b6:	80 bf       	out	0x30, r24	; 48
+ 4b8:	8d ec       	ldi	r24, 0xCD	; 205
+ 4ba:	80 93 64 00 	sts	0x0064, r24	; 0x800064 <__TEXT_REGION_LENGTH__+0x7e0064>
+ 4be:	82 e0       	ldi	r24, 0x02	; 2
+ 4c0:	80 93 c0 00 	sts	0x00C0, r24	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7e00c0>
+ 4c4:	80 e1       	ldi	r24, 0x10	; 16
+ 4c6:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
+ 4ca:	88 e1       	ldi	r24, 0x18	; 24
+ 4cc:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 4d0:	86 e0       	ldi	r24, 0x06	; 6
+ 4d2:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
+ 4d6:	82 ec       	ldi	r24, 0xC2	; 194
+ 4d8:	84 bd       	out	0x24, r24	; 36
+ 4da:	85 e4       	ldi	r24, 0x45	; 69
+ 4dc:	86 bd       	out	0x26, r24	; 38
+ 4de:	86 e4       	ldi	r24, 0x46	; 70
  4e0:	87 bd       	out	0x27, r24	; 39
  4e2:	81 e0       	ldi	r24, 0x01	; 1
  4e4:	85 bd       	out	0x25, r24	; 37
@@ -682,9 +682,9 @@ Disassembly of section .text:
  4ee:	3a e0       	ldi	r19, 0x0A	; 10
  4f0:	53 2e       	mov	r5, r19
  4f2:	d2 e0       	ldi	r29, 0x02	; 2
- 4f4:	4f e3       	ldi	r20, 0x3F	; 63
+ 4f4:	46 e4       	ldi	r20, 0x46	; 70
  4f6:	74 2e       	mov	r7, r20
- 4f8:	5e e3       	ldi	r21, 0x3E	; 62
+ 4f8:	55 e4       	ldi	r21, 0x45	; 69
  4fa:	65 2e       	mov	r6, r21
  4fc:	67 e1       	ldi	r22, 0x17	; 23
  4fe:	c6 2e       	mov	r12, r22
